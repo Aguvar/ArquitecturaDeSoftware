@@ -1,0 +1,22 @@
+{
+  "name": "flight-middleware",
+  "version": "1.0.0",
+  "description": "Obligatorio de Arquitectura de Software",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aguvar/ArquitecturaDeSoftware.git"
+  },
+  "author": "Augusto Varela / Sebastian Sosa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aguvar/ArquitecturaDeSoftware/issues"
+  },
+  "homepage": "https://github.com/Aguvar/ArquitecturaDeSoftware#readme",
+  "dependencies": {
+    "koa": "^2.7.0"
+  }
+}
