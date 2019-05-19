@@ -6,7 +6,7 @@ class AirlinesService {
   }
 
   async getAirline (id) {
-    const airline = await this.airlinesRepositoryService.getAirline(id)
+    const airline = await this.airlinesRepositoryService.getAirline(id.toUpperCase())
     if (!airline) {
       throw new AirlineNotFoundError()
     }

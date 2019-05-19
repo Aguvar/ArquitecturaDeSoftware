@@ -1,9 +1,10 @@
 # Airline data
 This app exposes airline data via a REST API.
 
-GET localhost:8080/airlines/
-GET localhost:8080/airlines/:id
+`GET localhost:8080/airlines/`
+`GET localhost:8080/airlines/:id`
 
+```
 [
   {
     id: "UA",
@@ -14,3 +15,4 @@ GET localhost:8080/airlines/:id
     name: "American Airlines Inc."
   },
 }
+```
