@@ -13,15 +13,20 @@ app.start = () => {
   container.registerServices(server)
   routes.configureRoutes(server)
   server.use(errorMiddleware)
+  seedData(container)
 
   let port = process.env.PORT || 80
   startServerOnPort(port)
 }
 
-function startServerOnPort (port) {
+function startServerOnPort(port) {
   server.listen(port, () => {
     console.log(`Running on port: ${port}`)
   })
 };
+
+function seedData(container) {
+  container.resolve('airportsRepositoryService').seedData();
+}
 
 module.exports = app
