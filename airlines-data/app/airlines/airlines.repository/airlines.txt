@@ -1,0 +1,14 @@
+UA_United Air Lines Inc.
+AA_American Airlines Inc.
+US_US Airways Inc.
+F9_Frontier Airlines Inc.
+B6_JetBlue Airways
+OO_Skywest Airlines Inc.
+AS_Alaska Airlines Inc.
+NK_Spirit Air Lines
+WN_Southwest Airlines Co.
+DL_Delta Air Lines Inc.
+EV_Atlantic Southeast Airlines
+HA_Hawaiian Airlines Inc.
+MQ_American Eagle Airlines Inc.
+VX_Virgin America
