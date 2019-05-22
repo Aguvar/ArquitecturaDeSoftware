@@ -12,11 +12,6 @@ class AirportsService {
     }
     return airport
   }
-
-  async getAirports () {
-    const airports = await this.airportsRepositoryService.getAirports()
-    return airports
-  }
 }
 
 module.exports = AirportsService
