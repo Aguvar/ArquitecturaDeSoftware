@@ -1,5 +1,7 @@
 const csv = require('fast-csv')
 const path = require('path')
+const papa = require('papaparse')
+const fs = require('fs')
 
 const csvFilePath = path.join(__dirname, '/flights.csv')
 
@@ -18,23 +20,43 @@ class FlightsRepositoryService {
 
 
 
+    // async getFlightss(quantity) {
+    //     return new Promise((resolve, reject) => {
+    //         const airlines = []
+    //         var counter = 0
+    //         csv.fromPath(csvFilePath, { headers: true })
+    //             .on('data', (flight) => {
+    //                 //   flights.push({ id: flight[flightIdKey], name: flight[flightNameKey]})
+    //                 console.log(quantity)
+    //                 console.log(counter)
+    //                 counter = counter + 1
+    //                 if (counter == quantity) {
+    //                     csv.close()
+    //                 }
+    //             })
+    //             .on('end', () => resolve(flights))
+    //     })
+    // }
+
     async getFlights(quantity) {
         return new Promise((resolve, reject) => {
-            const airlines = []
             var counter = 0
-            csv.fromPath(csvFilePath, { headers: true })
-                .on('data', (flight) => {
-                    //   flights.push({ id: flight[flightIdKey], name: flight[flightNameKey]})
-                    console.log(quantity)
-                    console.log(counter)
-                    counter = counter + 1
-                    if (counter == quantity) {
-                        csv.close()
-                    }
+            var flights = []
+            papa.parse(fs.createReadStream(csvFilePath),
+                {
+                    step: (results, parser) => {
+                        flights.push(results.data[0])
+                        counter = counter + 1
+                        if (counter == quantity) {
+                            parser.abort()
+                        }
+                    }, complete: (results, file) => {
+                        resolve(flights)
+                    }, header: true
                 })
-                .on('end', () => resolve(flights))
         })
     }
+
 }
 
 module.exports = FlightsRepositoryService
