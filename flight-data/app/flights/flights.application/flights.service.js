@@ -1,6 +1,7 @@
 // const AirlineNotFoundError = require('./errors/airlineNotFound.error')
 const Pipeline = require('./pipeline/pipeline');
 const request = require('request')
+const rp = require('request-promise')
 
 class FlightsService {
     constructor({ flightsRepositoryService }) {
@@ -20,9 +21,27 @@ class FlightsService {
         return airlines
     }
 
-    async broadcast(quantity) {
+    async broadcast(quantity, size, offset) {
         //Obtener los vuelos
-        let flights = await this.flightsRepositoryService.getFlights(quantity)
+        let flights = await this.flightsRepositoryService.getFlights(quantity * size, offset)
+
+        //Preparar los lotes
+        let lots = []
+        let lot_buffer = []
+
+        flights.forEach((value, index, array) => {
+            lot_buffer.push(value)
+            if (lot_buffer.length == size) {
+                lots.push(lot_buffer)
+                lot_buffer = []
+            }
+        })
+        if (lot_buffer.length != 0) {
+            lots.push(lot_buffer)
+        }
+
+        // console.log(lots);
+
 
         //Juntarlos con los datos de aeropuertos y aerolineas
         var pipeline = new Pipeline();
@@ -37,29 +56,42 @@ class FlightsService {
         // };
         //Mover estas cosas a sus propias carpetas
         var filterAirline = (input, next) => {
-            request.get(
-                `http://localhost:3001/airlines/${input.AIRLINE}`,
-                {},
-                (err, response, body) => {
-                    console.log(JSON.parse(body).name);
+            new Promise((resolve, reject) => {
+                input.forEach((value, index, array) => {
+                    rp(`http://localhost:3001/airlines/${value.AIRLINE}`)
+                    .then(function (body) {
+                        console.log(body);
+                    })  
+                        // request.get(
+                        //     `http://localhost:3001/airlines/${value.AIRLINE}`,
+                        //     {},
+                        //     (err, response, body) => {
+                        //         console.log(JSON.parse(body).name);
+                        //         value.AIRLINE_NAME = JSON.parse(body).name
+                        //         input[index] = value
+                        //         console.log(1);
 
-                    input.AIRLINE_NAME = JSON.parse(body).name
-                    next(null, input)
-                });
+                        //     });
+                })
+                console.log(2);
+
+                resolve(input)
+            }).then((lot) => {
+                console.log("Estoy Aca ++++++++++++");
+                console.log(3);
+                next(null, lot)
+            })
         };
         var filterAirport = (input, next) => {
             request.get(
                 `http://localhost:3001/airlines/${input.AIRLINE}`,
                 {},
                 (err, response, body) => {
-                    console.log(JSON.parse(body).name);
 
                     input.AIRLINE_NAME = JSON.parse(body).name
                     next(null, input)
                 });
         };
-
-        var pipedAirlines = []
 
         // pipeline.use(filterMultiply);
         // pipeline.use(filterPrint);
@@ -70,21 +102,21 @@ class FlightsService {
         });
 
         pipeline.on('end', (result) => {
-            console.log(`The result is ${result.AIRLINE_NAME}`);
-            pipedAirlines.push(result)
+            console.log(`The result is ${JSON.stringify(result[0])}`);
+            console.log(`The Airline Name is ${JSON.stringify(result[0].AIRLINE_NAME)}`);
         });
 
-        await flights.forEach(async (flight) => {
-            pipeline.run(flight)
-        })
-        
-        Promise.all(flights.map( (flight) => pipeline.run(flight))).then((results) => {
-            console.log(results);
-            
+
+        lots.forEach((lot) => {
+            pipeline.run(lot)
         })
 
+        // Promise.all(flights.map( (flight) => pipeline.run(flight))).then((results) => {
+        //     console.log(results);
+
+        // })
+
         //Publicarlos
-        console.log(pipedAirlines);
 
     }
 }

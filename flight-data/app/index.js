@@ -28,13 +28,15 @@ function startServerOnPort (port) {
 
 function startCronJobs(){
   let frequency = process.env.FLIGHT_FREQUENCY
-  let quantity = process.env.FLIGHT_QUANTITY
+  let quantity = process.env.FLIGHT_LOT_QUANTITY
+  let size = process.env.FLIGHT_LOT_SIZE
+  let offset = process.env.FLIGHT_OFFSET
 
   var flightsService = container.resolve("flightsService")
 
   let job = new CronJob(`*/${frequency} * * * * *`, function() {
     console.log('You will see this message every second');
-    flightsService.broadcast(quantity)
+    flightsService.broadcast(quantity, size, offset)
   }, null, true);
 }
 

@@ -38,16 +38,19 @@ class FlightsRepositoryService {
     //     })
     // }
 
-    async getFlights(quantity) {
+    async getFlights(quantity, offset) {
         return new Promise((resolve, reject) => {
             var counter = 0
             var flights = []
+
             papa.parse(fs.createReadStream(csvFilePath),
                 {
                     step: (results, parser) => {
-                        flights.push(results.data[0])
+                        if (counter >= offset) {
+                            flights.push(results.data[0])
+                        }
                         counter = counter + 1
-                        if (counter == quantity) {
+                        if (flights.length == quantity) {
                             parser.abort()
                         }
                     }, complete: (results, file) => {
