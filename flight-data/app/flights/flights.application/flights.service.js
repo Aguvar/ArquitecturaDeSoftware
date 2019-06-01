@@ -1,6 +1,8 @@
 // const AirlineNotFoundError = require('./errors/airlineNotFound.error')
 const Pipeline = require('./pipeline/pipeline');
-const request = require('request')
+const request = require('request');
+var filterAirPortExport = require("./filters/airport-filter")
+
 
 class FlightsService {
     constructor({ flightsRepositoryService, subscriptionsRepositoryService }) {
@@ -40,20 +42,9 @@ class FlightsService {
             lots.push(lot_buffer)
         }
 
-        // console.log(lots);
-
-
         //Juntarlos con los datos de aeropuertos y aerolineas
         var pipeline = new Pipeline();
 
-        // var filterMultiply = (input, next) => {
-        //     let result = input * input;
-        //     next(null, result);
-        // };
-        // var filterPrint = (input, next) => {
-        //     console.log(`Result from filter is ${input}`);
-        //     next(null, input);
-        // };
         //Mover estas cosas a sus propias carpetas
         var filterAirline = (input, next) => {
             let promises = []
@@ -95,8 +86,6 @@ class FlightsService {
             })
         };
 
-        // pipeline.use(filterMultiply);
-        // pipeline.use(filterPrint);
         pipeline.use(filterAirline)
         pipeline.use(filterAirport)
 
@@ -105,8 +94,7 @@ class FlightsService {
         });
 
         pipeline.on('end', (lot) => {
-            // console.log(`The result of the pipeline is ${JSON.stringify(result[0])}`);
-            // console.log(`The Airline Name is ${JSON.stringify(result[0].AIRLINE_NAME)}`);
+            //Broadcast
             this.subscriptionsRepositoryService.readSubscriptionsFile().then((subscriptions) => {
                 subscriptions.forEach((value, index, array) => {
                     console.log(`Publishing to ${value.uri}`);
@@ -117,30 +105,20 @@ class FlightsService {
                         (err, response) => {
                             if (err) {
                                 console.log(`Error publishing to ${value.uri}, returned ${err}`);
-                                
-                            }else{
-                                console.log(`Published to ${value.uri}, returned ${response}`);
 
+                            } else {
+                                console.log(`Published to ${value.uri}, returned ${response}`);
                             }
                         }
-
                     )
                 })
             })
-            //Broadcast
         });
 
 
         lots.forEach((lot) => {
             pipeline.run(lot)
         })
-
-        // Promise.all(flights.map( (flight) => pipeline.run(flight))).then((results) => {
-        //     console.log(results);
-
-        // })
-
-        //Publicarlos
 
     }
 }
