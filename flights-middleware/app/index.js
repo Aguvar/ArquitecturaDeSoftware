@@ -1,8 +1,8 @@
 const app = {}
 const container = require('./config/ioc/container')
 const routes = require('./config/ioc/routes')
-const express = require('../node_modules/express')
-const bodyParser = require('../node_modules/body-parser')
+const express = require('express')
+const bodyParser = require('body-parser')
 const server = express()
 const errorMiddleware = require('./config/middleware/errorMiddleware')
 
@@ -13,7 +13,6 @@ app.start = () => {
   container.registerServices(server)
   routes.configureRoutes(server)
   server.use(errorMiddleware)
-  seedData(container)
 
   let port = process.env.PORT || 80
   startServerOnPort(port)
@@ -24,9 +23,5 @@ function startServerOnPort(port) {
     console.log(`Running on port: ${port}`)
   })
 };
-
-function seedData(container) {
-  container.resolve('airportsRepositoryService').seedData();
-}
 
 module.exports = app
