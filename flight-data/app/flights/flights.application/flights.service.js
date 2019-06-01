@@ -1,11 +1,11 @@
 // const AirlineNotFoundError = require('./errors/airlineNotFound.error')
 const Pipeline = require('./pipeline/pipeline');
 const request = require('request')
-const rp = require('request-promise')
 
 class FlightsService {
-    constructor({ flightsRepositoryService }) {
+    constructor({ flightsRepositoryService, subscriptionsRepositoryService }) {
         this.flightsRepositoryService = flightsRepositoryService
+        this.subscriptionsRepositoryService = subscriptionsRepositoryService
     }
 
     async getAirline(id) {
@@ -56,54 +56,78 @@ class FlightsService {
         // };
         //Mover estas cosas a sus propias carpetas
         var filterAirline = (input, next) => {
-            new Promise((resolve, reject) => {
-                input.forEach((value, index, array) => {
-                    rp(`http://localhost:3001/airlines/${value.AIRLINE}`)
-                    .then(function (body) {
-                        console.log(body);
-                    })  
-                        // request.get(
-                        //     `http://localhost:3001/airlines/${value.AIRLINE}`,
-                        //     {},
-                        //     (err, response, body) => {
-                        //         console.log(JSON.parse(body).name);
-                        //         value.AIRLINE_NAME = JSON.parse(body).name
-                        //         input[index] = value
-                        //         console.log(1);
-
-                        //     });
-                })
-                console.log(2);
-
-                resolve(input)
-            }).then((lot) => {
-                console.log("Estoy Aca ++++++++++++");
-                console.log(3);
-                next(null, lot)
+            let promises = []
+            input.forEach((value, index, array) => {
+                promises.push(new Promise((resolve, reject) => {
+                    request.get(
+                        `http://localhost:3003/airlines/${value.AIRLINE}`,
+                        {},
+                        (err, response, body) => {
+                            console.log(JSON.parse(body).name);
+                            value.AIRLINE_NAME = JSON.parse(body).name
+                            array[index] = value
+                            resolve()
+                        });
+                }))
+            })
+            Promise.all(promises).then(() => {
+                next(null, input)
             })
         };
         var filterAirport = (input, next) => {
-            request.get(
-                `http://localhost:3001/airlines/${input.AIRLINE}`,
-                {},
-                (err, response, body) => {
+            let promises = []
+            input.forEach((value, index, array) => {
+                promises.push(new Promise((resolve, reject) => {
+                    request.get(
+                        `http://localhost:3004/airports/${value.DESTINATION_AIRPORT}`,
+                        {},
+                        (err, response, body) => {
+                            console.log(JSON.parse(body).name);
+                            value.DESTINATION_AIRPORT_NAME = JSON.parse(body).name
+                            array[index] = value
+                            resolve()
+                        });
 
-                    input.AIRLINE_NAME = JSON.parse(body).name
-                    next(null, input)
-                });
+                }))
+            })
+            Promise.all(promises).then(() => {
+                next(null, input)
+            })
         };
 
         // pipeline.use(filterMultiply);
         // pipeline.use(filterPrint);
         pipeline.use(filterAirline)
+        pipeline.use(filterAirport)
 
         pipeline.on('error', (err) => {
             console.log(`The error is ${err}`);
         });
 
-        pipeline.on('end', (result) => {
-            console.log(`The result is ${JSON.stringify(result[0])}`);
-            console.log(`The Airline Name is ${JSON.stringify(result[0].AIRLINE_NAME)}`);
+        pipeline.on('end', (lot) => {
+            // console.log(`The result of the pipeline is ${JSON.stringify(result[0])}`);
+            // console.log(`The Airline Name is ${JSON.stringify(result[0].AIRLINE_NAME)}`);
+            this.subscriptionsRepositoryService.readSubscriptionsFile().then((subscriptions) => {
+                subscriptions.forEach((value, index, array) => {
+                    console.log(`Publishing to ${value.uri}`);
+                    request.post(value.uri,
+                        {
+                            body: JSON.stringify(lot)
+                        },
+                        (err, response) => {
+                            if (err) {
+                                console.log(`Error publishing to ${value.uri}, returned ${err}`);
+                                
+                            }else{
+                                console.log(`Published to ${value.uri}, returned ${response}`);
+
+                            }
+                        }
+
+                    )
+                })
+            })
+            //Broadcast
         });
 
 
