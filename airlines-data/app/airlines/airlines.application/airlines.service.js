@@ -5,8 +5,8 @@ class AirlinesService {
     this.airlinesRepositoryService = airlinesRepositoryService
   }
 
-  async getAirline(id) {
-    const airline = await this.airlinesRepositoryService.getAirline(id.toUpperCase())
+  async get(id) {
+    const airline = await this.airlinesRepositoryService.get(id.toUpperCase())
     if (!airline) {
       throw new AirlineNotFoundError()
     }

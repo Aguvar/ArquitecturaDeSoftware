@@ -1,4 +1,6 @@
-const airlineDataFilePath = `${__dirname}/airlines.txt`
+const path = require('path')
+
+const airlinesDataFilePath = path.join(__dirname, '/airlines.txt')
 const keyPrefix = 'airline_'
 const delimiterCharacter = '_'
 
@@ -7,13 +9,13 @@ class AirlinesRepositoryService {
     this.cacheService = cacheService
   }
 
-  async getAirline(id) {
+  async get(id) {
     return this.cacheService.getValue(`${keyPrefix}${id}`);
   }
 
   async seedData() {
     const lineReader = require('readline').createInterface({
-      input: require('fs').createReadStream(airlineDataFilePath)
+      input: require('fs').createReadStream(airlinesDataFilePath)
     });
 
     lineReader.on('line', (line) => {

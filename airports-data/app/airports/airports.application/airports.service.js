@@ -1,12 +1,12 @@
 const AirportNotFoundError = require('./errors/airportNotFound.error')
 
 class AirportsService {
-  constructor ({ airportsRepositoryService }) {
+  constructor({ airportsRepositoryService }) {
     this.airportsRepositoryService = airportsRepositoryService
   }
 
-  async getAirport (id) {
-    const airport = await this.airportsRepositoryService.getAirport(id.toUpperCase())
+  async get(id) {
+    const airport = await this.airportsRepositoryService.get(id.toUpperCase())
     if (!airport) {
       throw new AirportNotFoundError()
     }

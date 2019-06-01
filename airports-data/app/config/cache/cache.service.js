@@ -1,7 +1,6 @@
 class CacheService {
   constructor({ cache }) {
     this.cache = cache
-    this.userTokenPrefix = 'user_token'
   }
 
   async setIfNotExists(key, value) {
