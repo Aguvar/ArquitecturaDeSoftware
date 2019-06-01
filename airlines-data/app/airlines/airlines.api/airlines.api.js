@@ -2,11 +2,11 @@ const { createController } = require('awilix-express')
 const errorMiddleware = require('./middleware/errorMiddleware')
 
 const API = ({ airlinesService, wrapAsync }) => ({
-  getAirline: wrapAsync.wrap(async (req, res) => {
-    res.send(await airlinesService.getAirline(req.params.id))
+  get: wrapAsync.wrap(async (req, res) => {
+    res.send(await airlinesService.get(req.params.id))
   }),
 })
 
 module.exports = createController(API)
-  .get('/airlines/:id', 'getAirline')
+  .get('/airlines/:id', 'get')
   .after([errorMiddleware])
