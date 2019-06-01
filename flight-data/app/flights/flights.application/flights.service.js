@@ -54,8 +54,8 @@ class FlightsService {
                         `http://localhost:3003/airlines/${value.AIRLINE}`,
                         {},
                         (err, response, body) => {
-                            console.log(JSON.parse(body).name);
-                            value.AIRLINE_NAME = JSON.parse(body).name
+                            console.log(body);
+                            value.AIRLINE_NAME = body
                             array[index] = value
                             resolve()
                         });
@@ -73,8 +73,8 @@ class FlightsService {
                         `http://localhost:3004/airports/${value.DESTINATION_AIRPORT}`,
                         {},
                         (err, response, body) => {
-                            console.log(JSON.parse(body).name);
-                            value.DESTINATION_AIRPORT_NAME = JSON.parse(body).name
+                            console.log(body);
+                            value.DESTINATION_AIRPORT_NAME = body
                             array[index] = value
                             resolve()
                         });
