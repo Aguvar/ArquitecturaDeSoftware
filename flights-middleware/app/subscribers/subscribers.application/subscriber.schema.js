@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi')
-const conditionSchema = require('./condition.schema')
+const conditionSchema = require('../../conditions/conditions.application/condition.schema')
 
 const schema = Joi.object().keys({
   airlineId: Joi.string().required(),
@@ -17,8 +17,8 @@ const schema = Joi.object().keys({
       .required(),
     expectedFormat: Joi.string().required(),
     custom_string_mapping: Joi.object().pattern(/./, Joi.string().allow(null)),
-    attribute_concatenation: Joi.object().pattern(/./, Joi.string().allow(null)),
-  })),
+    attribute_concatenation: Joi.object().pattern(/./, Joi.string().allow(null))
+  }))
 })
 
 module.exports = schema

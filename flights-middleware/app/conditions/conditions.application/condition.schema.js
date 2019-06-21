@@ -7,8 +7,8 @@ const schema = Joi.object().keys({
   lt: Joi.array().length(2).items(Joi.string().allow(null), Joi.number(), Joi.boolean()),
   ge: Joi.array().length(2).items(Joi.string().allow(null), Joi.number(), Joi.boolean()),
   gt: Joi.array().length(2).items(Joi.string().allow(null), Joi.number(), Joi.boolean()),
-  any: Joi.array().items(Joi.lazy(() => expression)),
-  all: Joi.array().items(Joi.lazy(() => expression)),
+  any: Joi.array().items(Joi.lazy(() => schema)),
+  all: Joi.array().items(Joi.lazy(() => schema))
 }).xor('any', 'all', 'eq', 'ne', 'le', 'lt', 'ge', 'gt')
 
 module.exports = schema
