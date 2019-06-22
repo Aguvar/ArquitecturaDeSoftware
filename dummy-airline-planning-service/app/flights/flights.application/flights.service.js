@@ -4,7 +4,6 @@ class FlightsService {
   async validate (flight) {
     let receivedTimestamp = Date.now()
     flight.receivedTimestamp = receivedTimestamp
-    // Log time between flight sent and arrived
     let momentReceived = moment.unix(flight.receivedTimestamp)
     let momentSent = moment.unix(flight.SentTimestamp)
 
