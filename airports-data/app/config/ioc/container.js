@@ -1,5 +1,5 @@
-const { asClass, createContainer, Lifetime } = require('../../../node_modules/awilix/lib/awilix')
-const { scopePerRequest } = require('../../../node_modules/awilix-express/lib')
+const { asClass, createContainer, Lifetime } = require('awilix')
+const { scopePerRequest } = require('awilix-express')
 const cache = require('../cache/cache')
 
 const wrapAsync = require('../middleware/wrapAsync')

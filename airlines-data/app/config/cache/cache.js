@@ -1,27 +1,27 @@
 const redis = require('redis')
 
 class Cache {
-  constructor() {
+  constructor () {
     this.client = redis.createClient(process.env.REDIS_URL)
   }
 
-  set(key, value) {
+  set (key, value) {
     this.client.set(key, value)
   }
 
-  setIfNotExists(key, value) {
+  setIfNotExists (key, value) {
     this.client.set(key, value, 'NX')
   }
 
-  keys(pattern, callback) {
+  keys (pattern, callback) {
     this.client.keys(pattern, callback)
   }
 
-  get(key, callback) {
+  get (key, callback) {
     this.client.get(key, callback)
   }
 
-  del(key, callback) {
+  del (key, callback) {
     this.client.del(key, callback)
   }
 }
