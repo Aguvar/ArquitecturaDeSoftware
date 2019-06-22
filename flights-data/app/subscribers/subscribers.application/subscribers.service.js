@@ -1,23 +1,22 @@
-const Joi = require('joi')
-const joiErrorFormatter = require('joi-error-formatter')
 const uniqid = require('uniqid')
 
 const subscriberSchema = require('./subscriber.schema')
 const InvalidPayloadError = require('../../errors/invalidPayload.error')
 
 class SubscribersService {
-  constructor({ subscribersRepositoryService }) {
+  constructor ({ subscribersRepositoryService, validatorService }) {
     this.subscribersRepositoryService = subscribersRepositoryService
+    this.validatorService = validatorService
   }
 
-  async getAll() {
+  async getAll () {
     return this.subscribersRepositoryService.getAll()
   }
 
-  async add(subscriber) {
-    const { error: validationError } = Joi.validate(subscriber, subscriberSchema)
+  async add (subscriber) {
+    const validationError = this.validatorService.getValidationError(subscriber, subscriberSchema)
     if (validationError) {
-      throw new InvalidPayloadError(joiErrorFormatter(validationError))
+      throw new InvalidPayloadError(validationError)
     }
 
     subscriber.id = uniqid()
