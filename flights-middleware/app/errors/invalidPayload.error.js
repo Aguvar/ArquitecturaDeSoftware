@@ -1,5 +1,5 @@
 class InvalidPayloadError extends Error {
-  constructor(message) {
+  constructor (message) {
     super(message)
   }
 }

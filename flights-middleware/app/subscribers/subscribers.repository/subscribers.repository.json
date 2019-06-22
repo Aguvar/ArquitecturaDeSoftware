@@ -1,0 +1,250 @@
+[
+  {
+    "airlineId": "UA",
+    "airlineDepartment": "Marketing",
+    "uri": "http://localhost:3005/",
+    "token": "example_airline_system_token",
+    "fileFormat": "JSON",
+    "triggers": {
+      "any": [
+        {
+          "eq": [
+            "cancelled",
+            "1"
+          ]
+        },
+        {
+          "ge": [
+            "departureDelayInMinutes",
+            100
+          ]
+        }
+      ]
+    },
+    "validations": {
+      "all": [
+        {
+          "any": [
+            {
+              "eq": [
+                "cancelled",
+                0
+              ]
+            },
+            {
+              "ne": [
+                "cancellationReason",
+                null
+              ]
+            }
+          ]
+        },
+        {
+          "any": [
+            {
+              "eq": [
+                "cancelled",
+                0
+              ]
+            },
+            {
+              "eq": [
+                "cancelled",
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "ne": [
+                "departureDelayInMinutes",
+                null
+              ]
+            },
+            {
+              "ne": [
+                "departureTime",
+                null
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "transformations": [
+      {
+        "key": "date",
+        "type": "date",
+        "expectedFormat": "DD-MM-YY"
+      },
+      {
+        "key": "airline",
+        "type": "string",
+        "expectedFormat": "titlecase"
+      },
+      {
+        "key": "flightNumber",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "tailNumber",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "originAirport",
+        "type": "string",
+        "expectedFormat": "upperCase"
+      },
+      {
+        "key": "destinationAirport",
+        "type": "string",
+        "expectedFormat": "upperCase"
+      },
+      {
+        "key": "departureTime",
+        "type": "time",
+        "expectedFormat": "hh:MM a"
+      },
+      {
+        "key": "scheduledDepartureTime",
+        "type": "time",
+        "expectedFormat": "hh:MM a"
+      },
+      {
+        "key": "departureDelayInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "taxiOutDurationInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "wheelsOff",
+        "type": "time",
+        "expectedFormat": "HHmm"
+      },
+      {
+        "key": "scheduledDurationInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "durationInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "airTimeInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "distance",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "wheelsOn",
+        "type": "time",
+        "expectedFormat": "HHmm"
+      },
+      {
+        "key": "taxiInDurationInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "scheduledArrivalTime",
+        "type": "time",
+        "expectedFormat": "hh:MM"
+      },
+      {
+        "key": "arrivalTime",
+        "type": "time",
+        "expectedFormat": "hh:MM"
+      },
+      {
+        "key": "arrivalDelayInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "diverted",
+        "type": "boolean",
+        "expectedFormat": "1/0"
+      },
+      {
+        "key": "cancelled",
+        "type": "boolean",
+        "expectedFormat": "1/0"
+      },
+      {
+        "key": "cancellationReason",
+        "type": "string",
+        "expectedFormat": "customStringMapping",
+        "customStringMapping": {
+          "A": "Airline/Carrier",
+          "B": "Weather",
+          "C": "National Air System",
+          "D": "Security",
+          "default": null
+        }
+      },
+      {
+        "key": "airSystemDelayInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "securityDelayInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "lateAircraftDelayInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "weatherDelayInMinutes",
+        "type": "number",
+        "expectedFormat": "decimal"
+      },
+      {
+        "key": "delayReason",
+        "type": "string",
+        "expectedFormat": "addMessageIfKeyNotNull",
+        "keysToCheck": [
+          {
+            "key": "airSystemDelayInMinutes",
+            "message": "Demorado por motivos del sistema aereo"
+          },
+          {
+            "key": "securityDelayInMinutes",
+            "message": "Demorado por motivos de seguridad"
+          },
+          {
+            "key": "lateAircraftDelayInMinutes",
+            "message": "Demorado por retraso de la embarcacion"
+          },
+          {
+            "key": "weatherDelayInMinutes",
+            "message": "Demorado por motivos climaticos"
+          }
+        ]
+      },
+      {
+        "key": "sentTimestamp",
+        "type": "number",
+        "expectedFormat": "decimal"
+      }
+    ],
+    "id": "gmoxk2czjwzjs60v"
+  }
+]

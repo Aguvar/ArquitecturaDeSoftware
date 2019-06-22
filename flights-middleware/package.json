@@ -1,5 +1,5 @@
 {
-  "name": "flights-middleware",
+  "name": "airlines-data",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,8 +14,10 @@
     "@hapi/joi": "^15.0.3",
     "awilix": "^3.0.9",
     "awilix-express": "^1.1.0",
+    "axios": "^0.19.0",
     "babel-eslint": "^10.0.1",
     "body-parser": "^1.18.3",
+    "bull-arena": "^2.6.3",
     "dotenv": "^6.1.0",
     "eslint-config-airbnb": "^17.1.0",
     "express": "^4.16.4",
@@ -23,12 +25,14 @@
     "express-session": "^1.15.6",
     "fast-csv": "^2.5.0",
     "glob": "^7.1.3",
+    "joi-error-formatter": "^0.5.3",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^5.2.0",
-    "moment": "^2.24.0",
     "nodemon": "^1.18.4",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
-    "redis": "^2.8.0"
+    "pino": "^5.12.6",
+    "redis": "^2.8.0",
+    "uniqid": "^5.0.3"
   }
 }
