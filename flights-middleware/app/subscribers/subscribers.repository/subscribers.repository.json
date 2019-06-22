@@ -16,7 +16,7 @@
         {
           "ge": [
             "departureDelayInMinutes",
-            10
+            100
           ]
         }
       ]
@@ -28,7 +28,7 @@
             {
               "eq": [
                 "cancelled",
-                "0"
+                0
               ]
             },
             {
@@ -44,13 +44,13 @@
             {
               "eq": [
                 "cancelled",
-                "0"
+                0
               ]
             },
             {
               "eq": [
                 "cancelled",
-                "1"
+                1
               ]
             }
           ]
@@ -75,118 +75,118 @@
     },
     "transformations": [
       {
-        "key": "departureDate",
-        "datatype": "date",
+        "key": "date",
+        "type": "date",
         "expectedFormat": "DD-MM-YY"
       },
       {
         "key": "airline",
-        "datatype": "string",
-        "expectedFormat": "upperCase"
+        "type": "string",
+        "expectedFormat": "titlecase"
       },
       {
         "key": "flightNumber",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "tailNumber",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "originAirport",
-        "datatype": "string",
+        "type": "string",
         "expectedFormat": "upperCase"
       },
       {
         "key": "destinationAirport",
-        "datatype": "string",
+        "type": "string",
         "expectedFormat": "upperCase"
       },
       {
-        "key": "scheduledDepartureTime",
-        "datatype": "time",
+        "key": "departureTime",
+        "type": "time",
         "expectedFormat": "hh:MM a"
       },
       {
-        "key": "departureTime",
-        "datatype": "time",
+        "key": "scheduledDepartureTime",
+        "type": "time",
         "expectedFormat": "hh:MM a"
       },
       {
         "key": "departureDelayInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "taxiOutDurationInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "wheelsOff",
-        "datatype": "time",
+        "type": "time",
         "expectedFormat": "HHmm"
       },
       {
-        "key": "scheduledFlightDurationInMinutes",
-        "datatype": "number",
+        "key": "scheduledDurationInMinutes",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
-        "key": "flightDurationInMinutes",
-        "datatype": "number",
+        "key": "durationInMinutes",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "airTimeInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "distance",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "wheelsOn",
-        "datatype": "time",
+        "type": "time",
         "expectedFormat": "HHmm"
       },
       {
         "key": "taxiInDurationInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "scheduledArrivalTime",
-        "datatype": "time",
+        "type": "time",
         "expectedFormat": "hh:MM"
       },
       {
         "key": "arrivalTime",
-        "datatype": "time",
+        "type": "time",
         "expectedFormat": "hh:MM"
       },
       {
         "key": "arrivalDelayInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "diverted",
-        "datatype": "boolean",
+        "type": "boolean",
         "expectedFormat": "1/0"
       },
       {
         "key": "cancelled",
-        "datatype": "boolean",
-        "expectedFormat": "true/false"
+        "type": "boolean",
+        "expectedFormat": "1/0"
       },
       {
         "key": "cancellationReason",
-        "datatype": "string",
+        "type": "string",
         "expectedFormat": "customStringMapping",
         "customStringMapping": {
           "A": "Airline/Carrier",
@@ -198,34 +198,51 @@
       },
       {
         "key": "airSystemDelayInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "securityDelayInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "lateAircraftDelayInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "weatherDelayInMinutes",
-        "datatype": "number",
+        "type": "number",
         "expectedFormat": "decimal"
       },
       {
         "key": "delayReason",
-        "datatype": "string",
-        "expectedFormat": "attributeConcatenation",
-        "attributeConcatenation": {
-          "airSystemDelayInMinutes": "Demorado por motivos del sistema aereo",
-          "securityDelayInMinutes": "Demorado por motivos de seguridad",
-          "lateAircraftDelayInMinutes": "Demorado por retraso de la embarcacion",
-          "weatherDelayInMinutes": "Demorado por motivos climaticos"
-        }
+        "type": "string",
+        "expectedFormat": "addMessageIfKeyNotNull",
+        "keysToCheck": [
+          {
+            "key": "airSystemDelayInMinutes",
+            "message": "Demorado por motivos del sistema aereo"
+          },
+          {
+            "key": "securityDelayInMinutes",
+            "message": "Demorado por motivos de seguridad"
+          },
+          {
+            "key": "lateAircraftDelayInMinutes",
+            "message": "Demorado por retraso de la embarcacion"
+          },
+          {
+            "key": "weatherDelayInMinutes",
+            "message": "Demorado por motivos climaticos"
+          }
+        ]
+      },
+      {
+        "key": "sentTimestamp",
+        "type": "number",
+        "expectedFormat": "decimal"
       }
     ],
     "id": "gmoxk2czjwzjs60v"

@@ -1,27 +1,34 @@
 const redis = require('redis')
 
+const FIRST_ELEM_POSITION = 0
+const LAST_ELEM_POSITION = -1
+
 class Cache {
-  constructor() {
+  constructor () {
     this.client = redis.createClient(process.env.REDIS_URL)
   }
 
-  set(key, value) {
+  set (key, value) {
     this.client.set(key, value)
   }
 
-  setIfNotExists(key, value) {
+  setIfNotExists (key, value) {
     this.client.set(key, value, 'NX')
   }
 
-  keys(pattern, callback) {
-    this.client.keys(pattern, callback)
+  push (key, value, callback) {
+    this.client.rpush(key, value, callback)
   }
 
-  get(key, callback) {
+  get (key, callback) {
     this.client.get(key, callback)
   }
 
-  del(key, callback) {
+  getList (key, callback) {
+    this.client.lrange(key, FIRST_ELEM_POSITION, LAST_ELEM_POSITION, callback)
+  }
+
+  del (key, callback) {
     this.client.del(key, callback)
   }
 }

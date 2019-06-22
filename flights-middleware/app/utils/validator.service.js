@@ -9,11 +9,9 @@ class ValidatorService {
 
   getValidationError (entity, schema) {
     const { error: validationError } = Joi.validate(entity, schema)
-    if (validationError) {
-      return joiErrorFormatter(validationError)
-    } else {
-      return null
-    }
+    return validationError
+      ? joiErrorFormatter(validationError)
+      : null
   }
 }
 

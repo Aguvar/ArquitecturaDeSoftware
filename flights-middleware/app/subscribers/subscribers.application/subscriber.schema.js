@@ -11,13 +11,18 @@ const schema = Joi.object().keys({
   validations: conditionSchema,
   transformations: Joi.array().items(Joi.object().keys({
     key: Joi.string(),
-    datatype: Joi
+    type: Joi
       .string()
-      .valid('string', 'date', 'time', 'number', 'boolean', 'custom_string_mapping')
+      .valid('string', 'date', 'time', 'number', 'boolean', 'customStringMapping', 'addMessageIfKeyNotNull')
       .required(),
     expectedFormat: Joi.string().required(),
-    custom_string_mapping: Joi.object().pattern(/./, Joi.string().allow(null)),
-    attribute_concatenation: Joi.object().pattern(/./, Joi.string().allow(null))
+    customStringMapping: Joi.object({
+      default: Joi.string().allow(null).required()
+    }).pattern(/./, Joi.string().allow(null)),
+    keysToCheck: Joi.array().items(Joi.object({
+      key: Joi.string().required(),
+      message: Joi.string().required()
+    }))
   }))
 })
 
