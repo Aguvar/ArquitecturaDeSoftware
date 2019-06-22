@@ -3,10 +3,11 @@ const errorMiddleware = require('../../middleware/errorMiddleware')
 
 const API = ({ flightsService, wrapAsync }) => ({
   send: wrapAsync.wrap(async (req, res) => {
-    res.send(await flightsService.broadcast(10, 2))
-  }),
+    const { quantity, offset } = req.body
+    res.send(await flightsService.publish(quantity, offset))
+  })
 })
 
 module.exports = createController(API)
-  .get('/flights', 'send')
+  .post('/flights', 'send')
   .after([errorMiddleware])
