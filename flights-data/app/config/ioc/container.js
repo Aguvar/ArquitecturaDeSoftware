@@ -1,12 +1,10 @@
 const { asClass, createContainer, Lifetime } = require('awilix')
 const { scopePerRequest } = require('awilix-express')
-const cache = require('../cache/cache')
 const wrapAsync = require('../middleware/wrapAsync')
 
 const container = createContainer()
 
 container.register({
-  cache: asClass(cache).scoped(),
   wrapAsync: asClass(wrapAsync).scoped()
 })
 
