@@ -9,6 +9,7 @@ class AirportsService {
       const airports = await axios.get(AIRLINE_SERVICE_URL)
       return airports.data
     } catch (err) {
+      console.log(err)
       logger.error('Airport service unavailable')
     }
   }

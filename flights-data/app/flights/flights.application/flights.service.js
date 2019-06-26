@@ -37,9 +37,9 @@ class FlightsService {
   }
 
   toExpectedFormat (flights) {
-    const currentTimestamp = Date.now()
+    const sentTimestamp = Date.now()
 
-    return flights.map(flight => ({ ...self.formatFlight(flight), currentTimestamp }))
+    return flights.map(flight => ({ ...self.formatFlight(flight), sentTimestamp }))
   }
 
   formatFlight (flight) {

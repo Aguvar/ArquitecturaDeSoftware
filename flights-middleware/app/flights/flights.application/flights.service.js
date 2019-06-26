@@ -43,8 +43,9 @@ class FlightsService {
 
     try {
       await Promise.all(incomingFlights.map(async incomingFlight => {
-        if (!self.validatorService.isValid(incomingFlight, incomingFlightSchema)) {
-          // self.loggerService.logError(`Flight ${incomingFlight.flightNumber} does not match the expected format`)
+        const validationErrorMessage = self.validatorService.getValidationError(incomingFlight, incomingFlightSchema)
+        if (validationErrorMessage) {
+          // self.loggerService.logError(`Flight ${incomingFlight.flightNumber} does not match the expected format. ${validationErrorMessage}`)
           return false
         }
 
