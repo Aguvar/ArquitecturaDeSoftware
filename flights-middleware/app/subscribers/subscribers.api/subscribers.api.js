@@ -1,5 +1,6 @@
 const { createController } = require('awilix-express')
 const errorMiddleware = require('../../config/middleware/errorMiddleware')
+const auth = require('./middleware/auth')
 
 const API = ({ subscribersService, wrapAsync }) => ({
   add: wrapAsync.wrap(async (req, res) => {
@@ -9,5 +10,7 @@ const API = ({ subscribersService, wrapAsync }) => ({
 })
 
 module.exports = createController(API)
-  .post('/subscribers', 'add')
+  .post('/subscribers', 'add', {
+    before: [auth]
+  })
   .after([errorMiddleware])
