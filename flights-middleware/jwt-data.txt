@@ -1,2 +1,0 @@
-secret=algun-secreto-de-aerolinea
-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1NjE1ODI5NDN9.bHQ4_URVgzN6R9S--lyMGgnEfpIaTAWSsy6iHRnqjzU

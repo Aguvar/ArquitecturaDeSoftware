@@ -1,0 +1,13 @@
+1. To access operations on subscriber routes, please add the following header to the request:
+
+key: auth
+value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1NjE1ODI5NDN9.bHQ4_URVgzN6R9S--lyMGgnEfpIaTAWSsy6iHRnqjzU
+
+
+2. Add to .env the following variable:
+
+APP_SECRET = algun-secreto-de-aerolinea
+
+
+3. Put flights.csv file on flight-data/app/flights/flights.repository/flights.csv
+Due to github size limitations the file cannot be uploaded
