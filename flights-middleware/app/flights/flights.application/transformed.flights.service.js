@@ -2,7 +2,6 @@ const axios = require('axios')
 const jsonxml = require('jsontoxml')
 
 const MAX_QUEUE_SIZE = 30
-const TIMEOUT_IN_MS = 100
 const FILE_FORMAT = {
   JSON: 'JSON',
   XML: 'XML'
@@ -13,8 +12,6 @@ class TransformedFlightsService {
     this.cacheService = cacheService
     this.loggerService = loggerService
     this.maxQueueSize = MAX_QUEUE_SIZE
-    this.timeout = TIMEOUT_IN_MS
-    this.timeoutHandles = {}
   }
 
   async push (flight, subscriber) {
