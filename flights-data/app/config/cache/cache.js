@@ -5,6 +5,10 @@ class Cache {
     this.client = redis.createClient(process.env.REDIS_URL)
   }
 
+  setIfNotExists (key, value) {
+    this.client.set(key, value, 'NX')
+  }
+
   setWithExpiration (key, value, expirationInSeconds, callback) {
     this.client.set(key, value, 'EX', expirationInSeconds, callback)
   }

@@ -3,6 +3,10 @@ class CacheService {
     this.cache = cache
   }
 
+  async setIfNotExists (key, value) {
+    this.cache.setIfNotExists(key, value)
+  }
+
   async setWithExpiration (key, value, expirationInSeconds) {
     return new Promise((resolve, reject) => {
       this.cache.setWithExpiration(key, value, expirationInSeconds, (error, value) => {

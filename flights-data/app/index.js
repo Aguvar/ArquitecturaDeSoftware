@@ -20,9 +20,9 @@ app.start = () => {
       console.error('Failed to connect to mongo on startup - retrying in 5 sec', err)
       setTimeout(app.start, 5000)
     } else {
-      const repo = client.db('flights-middleware')
-      container.registerServices(server)
+      const repo = client.db('flights-data')
       container.register({ repo: asValue(repo) })
+      container.registerServices(server)
       routes.configureRoutes(server)
       server.use(errorMiddleware)
 
