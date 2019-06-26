@@ -19,14 +19,14 @@ app.start = () => {
   startServerOnPort(port)
 }
 
-function startServerOnPort(port) {
+function startServerOnPort (port) {
   server.listen(port, () => {
     console.log(`Running on port: ${port}`)
   })
 };
 
-function seedData(container) {
-  container.resolve('airportsRepositoryService').seedData();
+function seedData (container) {
+  container.resolve('airportsRepositoryService').seedData()
 }
 
 module.exports = app
