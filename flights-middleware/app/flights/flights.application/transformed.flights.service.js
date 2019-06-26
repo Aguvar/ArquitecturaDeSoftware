@@ -57,6 +57,7 @@ class TransformedFlightsService {
     try {
       await axios.post(subscriber.uri, flights)
     } catch (err) {
+      console.log(err.message)
       this.loggerService.logError(
         `Unavailable subscriber ${subscriber.airline} - ${subscriber.airlineDepartment}`
       )
