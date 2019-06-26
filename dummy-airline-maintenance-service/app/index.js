@@ -3,11 +3,13 @@ const container = require('./config/ioc/container')
 const routes = require('./config/ioc/routes')
 const express = require('../node_modules/express')
 const bodyParser = require('../node_modules/body-parser')
+require('body-parser-xml')(bodyParser)
 const server = express()
 const errorMiddleware = require('./config/middleware/errorMiddleware')
 
 server.use(bodyParser.urlencoded({ extended: false }))
 server.use(bodyParser.json())
+server.use(bodyParser.xml())
 
 app.start = () => {
   container.registerServices(server)
