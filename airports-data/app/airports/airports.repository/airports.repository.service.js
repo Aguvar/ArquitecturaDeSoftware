@@ -1,7 +1,7 @@
 const airports = require('./airports.json')
 
 class AirportsRepositoryService {
-  getAll () {
+  async getAll () {
     return airports
   }
 }

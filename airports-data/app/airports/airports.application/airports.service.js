@@ -1,5 +1,9 @@
 class AirportsService {
-  getAll () {
+  constructor ({ airportsRepositoryService }) {
+    this.airportsRepositoryService = airportsRepositoryService
+  }
+
+  async getAll () {
     return this.airportsRepositoryService.getAll()
   }
 }
