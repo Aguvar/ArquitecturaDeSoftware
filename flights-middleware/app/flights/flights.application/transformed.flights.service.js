@@ -1,7 +1,12 @@
 const axios = require('axios')
+const jsonxml = require('jsontoxml')
 
 const MAX_QUEUE_SIZE = 30
 const TIMEOUT_IN_MS = 100
+const FILE_FORMAT = {
+  JSON: 'JSON',
+  XML: 'XML'
+}
 
 class TransformedFlightsService {
   constructor ({ cacheService, loggerService }) {
@@ -27,8 +32,33 @@ class TransformedFlightsService {
     const jsonFlights = flights.map(flight => JSON.parse(flight))
     await this.cacheService.del(key)
 
+    switch (subscriber.fileFormat) {
+      case FILE_FORMAT.JSON:
+        await this.sendAsJson(jsonFlights, subscriber)
+        break
+      case FILE_FORMAT.XML:
+        await this.sendAsXml(jsonFlights, subscriber)
+        break
+    }
+  }
+
+  async sendAsXml (flights, subscriber) {
     try {
-      await axios.post(subscriber.uri, jsonFlights)
+      const config = { headers: { 'Content-Type': 'text/xml' } }
+      const xml = jsonxml({
+        flights: flights.map(flight => ({ name: 'flight', children: flight }))
+      })
+      await axios.post(subscriber.uri, xml, config)
+    } catch (err) {
+      this.loggerService.logError(
+        `Unavailable subscriber ${subscriber.airline} - ${subscriber.airlineDepartment}`
+      )
+    }
+  }
+
+  async sendAsJson (flights, subscriber) {
+    try {
+      await axios.post(subscriber.uri, flights)
     } catch (err) {
       this.loggerService.logError(
         `Unavailable subscriber ${subscriber.airline} - ${subscriber.airlineDepartment}`

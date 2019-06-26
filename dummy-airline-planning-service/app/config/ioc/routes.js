@@ -1,4 +1,4 @@
-const { loadControllers } = require('awilix-express/lib')
+const { loadControllers } = require('../../../node_modules/awilix-express/lib')
 
 module.exports = {
   configureRoutes: (server) => {

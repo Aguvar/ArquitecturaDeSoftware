@@ -1,15 +1,9 @@
-const moment = require('moment')
-
 class FlightsService {
-  async validate (flight) {
-    let receivedTimestamp = Date.now()
-    flight.receivedTimestamp = receivedTimestamp
-    let momentReceived = moment.unix(flight.receivedTimestamp)
-    let momentSent = moment.unix(flight.SentTimestamp)
-
-    let latency = momentReceived.diff(momentSent)
-
-    console.log(`Latency: ${latency} ms`)
+  async add (flights) {
+    const currentTimestamp = Date.now()
+    flights.forEach(flight => {
+      console.log(`Latency is ${currentTimestamp - flight.sentTimestamp}`)
+    })
   }
 }
 

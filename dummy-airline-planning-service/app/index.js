@@ -8,6 +8,7 @@ const server = express()
 const errorMiddleware = require('./config/middleware/errorMiddleware')
 
 server.use(bodyParser.urlencoded({ extended: false }))
+server.use(bodyParser.json())
 server.use(bodyParser.xml())
 
 app.start = () => {
@@ -21,7 +22,7 @@ app.start = () => {
 
 function startServerOnPort (port) {
   server.listen(port, () => {
-    console.log(`Running planning service on port: ${port}`)
+    console.log(`Running ServicioDePlanificacion on port: ${port}`)
   })
 };
 module.exports = app
