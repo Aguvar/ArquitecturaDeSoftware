@@ -1,7 +1,3 @@
-class InvalidPayloadError extends Error {
-  constructor (message) {
-    super(message)
-  }
-}
+class InvalidPayloadError extends Error {}
 
 module.exports = InvalidPayloadError

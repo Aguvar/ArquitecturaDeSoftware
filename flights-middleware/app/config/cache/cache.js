@@ -12,8 +12,12 @@ class Cache {
     this.client.set(key, value)
   }
 
-  setIfNotExists (key, value) {
-    this.client.set(key, value, 'NX')
+  setWithExpiration (key, value, expirationInSeconds, callback) {
+    this.client.set(key, value, 'EX', expirationInSeconds, callback)
+  }
+
+  setIfNotExists (key, value, callback) {
+    this.client.set(key, value, 'NX', callback)
   }
 
   push (key, value, callback) {

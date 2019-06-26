@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi')
 const conditionSchema = require('../../conditions/conditions.application/condition.schema')
 
 const schema = Joi.object().keys({
-  airlineId: Joi.string().required(),
+  airline: Joi.string().required(),
   airlineDepartment: Joi.string().required(),
   uri: Joi.string().required(),
   token: [Joi.string(), Joi.number()],

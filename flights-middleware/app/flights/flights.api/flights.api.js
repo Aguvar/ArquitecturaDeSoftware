@@ -1,12 +1,16 @@
+const Queue = require('bull')
+const incomingFlightsQueue = new Queue('incomingFlightsQueue')
 const { createController } = require('awilix-express')
-const errorMiddleware = require('../../middleware/errorMiddleware')
+const errorMiddleware = require('../../config/middleware/errorMiddleware')
 
-const API = ({ flightsService, wrapAsync }) => ({
-  broadcast: wrapAsync.wrap(async (req, res) => {
-    res.send(await flightsService.broadcast())
+const API = ({ wrapAsync }) => ({
+  add: wrapAsync.wrap(async (req, res) => {
+    const { flights } = req.body
+    incomingFlightsQueue.add(flights)
+    res.send('received by ' + process.pid)
   })
 })
 
 module.exports = createController(API)
-  .get('/flights', 'broadcast')
+  .post('/flights', 'add')
   .after([errorMiddleware])

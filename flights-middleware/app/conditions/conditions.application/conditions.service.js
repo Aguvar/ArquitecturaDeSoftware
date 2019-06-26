@@ -2,7 +2,7 @@ const conditionSchema = require('./condition.schema')
 
 const BASE_OPERATORS = ['eq', 'ne', 'le', 'lt', 'ge', 'gt']
 
-class SubscribersDomainService {
+class ConditionsService {
   constructor ({ validatorService }) {
     this.validatorService = validatorService
   }
@@ -29,9 +29,9 @@ class SubscribersDomainService {
   evaluateBaseCondition (flight, attributeToCompare, comparator, valueToCompare) {
     switch (comparator) {
       case 'eq':
-        return flight[attributeToCompare] === valueToCompare
+        return flight[attributeToCompare] == valueToCompare
       case 'ne':
-        return flight[attributeToCompare] !== valueToCompare
+        return flight[attributeToCompare] != valueToCompare
       case 'le':
         return flight[attributeToCompare] <= valueToCompare
       case 'lt':
@@ -71,4 +71,4 @@ class SubscribersDomainService {
   }
 }
 
-module.exports = SubscribersDomainService
+module.exports = ConditionsService

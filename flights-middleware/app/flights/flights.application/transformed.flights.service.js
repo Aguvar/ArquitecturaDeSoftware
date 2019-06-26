@@ -1,24 +1,22 @@
 const axios = require('axios')
 
-const MAX_QUEUE_SIZE = 3
+const MAX_QUEUE_SIZE = 30
 const TIMEOUT_IN_MS = 100
 
-class SubscribersQueuesService {
+class TransformedFlightsService {
   constructor ({ cacheService, loggerService }) {
     this.cacheService = cacheService
     this.loggerService = loggerService
     this.maxQueueSize = MAX_QUEUE_SIZE
     this.timeout = TIMEOUT_IN_MS
     this.timeoutHandles = {}
-    this.pepe = 2
   }
 
-  async push (subscriber, message) {
+  async push (flight, subscriber) {
     const key = this.getKeyName(subscriber.id)
-    const queueSize = await this.cacheService.push(key, message)
+    const queueSize = await this.cacheService.push(key, JSON.stringify(flight))
 
     if (queueSize >= this.maxQueueSize) {
-      console.log(queueSize, this.maxQueueSize)
       this.send(subscriber)
     }
   }
@@ -26,13 +24,15 @@ class SubscribersQueuesService {
   async send (subscriber) {
     const key = this.getKeyName(subscriber.id)
     const flights = await this.cacheService.getListValues(key)
+    const jsonFlights = flights.map(flight => JSON.parse(flight))
     await this.cacheService.del(key)
 
     try {
-      const sendResponse = await axios.post(subscriber.uri, flights)
-      console.log(sendResponse)
+      await axios.post(subscriber.uri, jsonFlights)
     } catch (err) {
-      this.loggerService.logError(`Unavailable subscriber ${subscriber.airlineId} - ${subscriber.airlineDepartment}`)
+      this.loggerService.logError(
+        `Unavailable subscriber ${subscriber.airline} - ${subscriber.airlineDepartment}`
+      )
     }
   }
 
@@ -41,4 +41,4 @@ class SubscribersQueuesService {
   }
 }
 
-module.exports = SubscribersQueuesService
+module.exports = TransformedFlightsService
