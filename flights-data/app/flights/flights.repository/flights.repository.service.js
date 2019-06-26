@@ -5,27 +5,30 @@ const fs = require('fs')
 const csvFilePath = path.join(__dirname, '/flights.csv')
 
 class FlightsRepositoryService {
-  async get(quantity, offset) {
-    return new Promise((resolve, reject) => {
-      let flights = []
-      let addedFlightsCounter = 0
+  async read (quantity, chunkSize, offset, callback) {
+    let flights = []
+    let readFlights = 0
 
-      papa.parse(
-        fs.createReadStream(csvFilePath),
-        {
-          step: (results, parser) => {
-            if (addedFlightsCounter >= offset) {
-              flights.push(results.data[0])
-            }
-            addedFlightsCounter++
-            if (flights.length >= quantity) {
-              parser.abort()
-            }
-          },
-          complete: () => resolve(flights),
-          header: true
-        })
-    })
+    papa.parse(
+      fs.createReadStream(csvFilePath),
+      {
+        step: (results, parser) => {
+          if (readFlights >= offset) {
+            flights.push(results.data[0])
+          }
+          readFlights++
+          if (flights.length >= chunkSize) {
+            callback(flights)
+            flights = []
+          }
+          if (readFlights - offset >= quantity) {
+            parser.abort()
+          }
+        },
+        complete: () => {},
+        header: true,
+        dynamicTyping: true
+      })
   }
 }
 
