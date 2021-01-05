@@ -14,7 +14,7 @@
     "@hapi/joi": "^15.0.3",
     "awilix": "^3.0.9",
     "awilix-express": "^1.1.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.0.1",
     "body-parser": "^1.18.3",
     "bull": "^3.10.0",
