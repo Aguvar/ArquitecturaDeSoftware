@@ -13,7 +13,7 @@
     "awilix": "^3.0.9",
     "awilix-express": "^1.1.0",
     "body-parser": "^1.18.3",
-    "body-parser-xml": "^1.1.0",
+    "body-parser-xml": "^2.0.3",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "glob": "^7.1.3",
